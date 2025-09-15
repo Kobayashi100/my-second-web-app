@@ -4,12 +4,13 @@
 
 <template>
   <div>
-    <a href="https://vite.dev" target="_blank">
+    <!-- <a href="https://vite.dev" target="_blank">
       <img src="/vite.svg" class="logo" alt="Vite logo" />
     </a>
     <a href="https://vuejs.org/" target="_blank">
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+    </a> -->
+    <img src="./assets/icons/bike.png" class="logo bike" alt="bike">
     <div id="app">
     <router-view />
   </div>
