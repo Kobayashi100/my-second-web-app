@@ -8,3 +8,6 @@ export const currentUser = ref<string | null>(null)
 
 // 返却予定時刻（任意入力）
 export const returnTime = ref<string | null>(null)
+
+// 充電しているユーザー
+export const chargingUser = ref<string | null>(null)

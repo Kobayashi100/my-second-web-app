@@ -11,17 +11,25 @@
     </div>
 
     <!-- 条件分岐 -->
-    <div v-if="currentUser === user">
-      <!-- 利用中の本人には返却ボタン -->
-      <button @click="returnBike">返却</button>
-    </div>
-    <!-- 自転車が誰も使っていない場合：貸出/充電ボタン -->
-<div v-else-if="!currentUser">
+     <!-- 未使用なら貸出/充電ボタン -->
+<div v-if="bikeStatus === '未使用'">
+　<button @click="startCharging">充電</button>
   <button @click="openLentModal">貸出</button>
-  <button @click="charging">充電</button>
+  
+</div>
+    <!-- 利用状況が貸出中で、利用者が自分なら返却ボタン -->
+<div v-else-if="bikeStatus.includes('貸出中') && currentUser === user">
+  <button @click="returnBike">返却</button>
 </div>
 
-<!-- 他のユーザーが利用中の場合：ボタンを出さない -->
+<!-- 利用状況が充電中で、充電開始者が自分なら充電完了ボタン -->
+<div v-if="bikeStatus === '充電中' && chargingUser === user">
+  <button @click="finishCharging">充電完了</button>
+</div>
+
+
+
+<!-- 他のユーザーが利用中または充電中ならボタンを出さない -->
 
 
   <!-- <button @click="charging">充電</button>
@@ -59,7 +67,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { bikeStatus, currentUser,returnTime } from '../stores/bikeStatus'
+import { bikeStatus, currentUser,returnTime,chargingUser } from '../stores/bikeStatus'
 
 const status = ref('未使用')
 const showLentModal = ref(false)
@@ -139,9 +147,16 @@ function showFlash(msg: string) {
 }
 
 // 充電処理
-function charging() {
-  bikeStatus.value = `充電中`
+function startCharging() {
+  bikeStatus.value = '充電中'
+  chargingUser.value = user
+  console.log('chargingUser set to:', chargingUser.value, 'current user:', user)
 }
+function finishCharging() {
+  bikeStatus.value = '未使用'
+  chargingUser.value = null
+}
+
 // 返却処理
 function returnBike() {
   // 状態をリセット
